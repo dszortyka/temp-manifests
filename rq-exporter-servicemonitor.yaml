@@ -2,19 +2,15 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: rq-exporter-metrics
-  namespace: monitoring
   labels:
     app: rq-exporter
     release: monitoring
 spec:
+  endpoints:
+  - interval: 5s
+    path: /
+    port: http-metrics
   selector:
     matchLabels:
       app: rq-exporter
       release: monitoring
-  endpoints:
-  - interval: 5s
-    path: /
-    port: "9726"
-  namespaceSelector:
-    matchNames:
-      - monitoring
