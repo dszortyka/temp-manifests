@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rq-exporter
-  namespace: monitoring
   labels:
     app: rq-exporter
 spec:
@@ -17,6 +16,7 @@ spec:
       name: rq-exporter
       labels:
         app: rq-exporter
+        release: monitoring
     spec:
       containers:
       - env:
@@ -26,8 +26,8 @@ spec:
             value: "redis.redis.svc.cluster.local"
           - name: RQ_REDIS_PASS
             value: "123456"
-          - name: RQ_EXPORTER_HOST
-            value: "localhost"
+          # - name: RQ_EXPORTER_HOST
+          #   value: "localhost"
           - name: RQ_EXPORTER_PORT
             value: "9726"
         image: dszortyka/rq-exporter:latest
@@ -38,7 +38,8 @@ spec:
           - rq_exporter
           #- "--port=9726"
         ports:
-          - containerPort: 9726
+          - name: http-metrics
+            containerPort: 9726
         resources: {}
       restartPolicy: Always       
 status: {}
